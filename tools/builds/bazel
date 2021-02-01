@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# wrapper for downloading and running bazelisk as bazel
+
+REPOSITORY_ROOT=$(git rev-parse --show-toplevel)
+PLATFORM=$(uname | tr '[:upper:]' '[:lower:]')
+
+BAZELISK_VERSION="v1.7.4"
+BAZELISK_BINARY_URL="https://github.com/bazelbuild/bazelisk/releases/download/${BAZELISK_VERSION}/bazelisk-${PLATFORM}-amd64"
+BAZELISK_BINARY="$HOME/.local/bin/bazel"
+
+if [[ "$PLATFORM" != "darwin" ]] && [[ "$PLATFORM" != "linux" ]]; then
+  echo "Not supported on $PLATFORM"
+  exit 1
+fi
+
+if [[ ! -x ${BAZELISK_BINARY} ]]; then
+  echo "Downloading bazel binary to BAZELISK_BINARY"
+  rm -f $(dirname ${BAZELISK_BINARY})/bazel*
+  mkdir -p $(dirname ${BAZELISK_BINARY})
+  if [[ -x "$(command -v wget)" ]]; then
+    wget -q ${BAZELISK_BINARY_URL} --output-document ${BAZELISK_BINARY}
+  elif [[ -x "$(command -v curl)" ]]; then
+    curl -s ${BAZELISK_BINARY_URL} --output ${BAZELISK_BINARY}
+  else
+    echo "Please install wget or curl."
+    exit 1
+  fi
+  chmod +x ${BAZELISK_BINARY}
+fi
+
+${BAZELISK_BINARY} "$@"
+exit $?

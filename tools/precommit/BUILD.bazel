@@ -1,0 +1,21 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@rules_python//python:defs.bzl", "py_binary")
+
+exports_files(
+    [
+        "requirements.txt",
+    ],
+)
+
+load("@pre_commit_deps//:requirements.bzl", "requirement")
+
+# To install this precommit
+#   bazel run --run_under="cd $PWD && " :precommit -- install
+py_binary(
+    name = "precommit",
+    srcs = ["precommit.py"],
+    deps = [
+        requirement("pre-commit"),
+    ],
+)

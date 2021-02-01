@@ -1,0 +1,9 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@build_bazel_rules_nodejs//:index.bzl", "nodejs_binary")
+
+nodejs_binary(
+    name = "openapi-validator",
+    data = ["@npm-openapi//@stoplight/spectral"],
+    entry_point = "@npm-openapi//:node_modules/@stoplight/spectral/dist/cli/index.js",
+)

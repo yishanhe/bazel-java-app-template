@@ -1,0 +1,10 @@
+package(default_visibility = ["//visibility:public"])
+
+sh_binary(
+    name = "helm",
+    srcs = ["helm.sh"],
+    data = [
+        "@helm//:helm_binary",
+        "@helm_osx//:helm_binary",
+    ],
+)

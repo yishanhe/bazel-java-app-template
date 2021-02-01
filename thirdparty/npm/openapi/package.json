@@ -1,0 +1,9 @@
+{
+  "description": "runtime dependencies for openapi related tools",
+  "dependencies": {
+    "@stoplight/spectral": "^5.8.0"
+  },
+  "scripts": {
+    "prestart": "echo $PWD && npm config get"
+  }
+}

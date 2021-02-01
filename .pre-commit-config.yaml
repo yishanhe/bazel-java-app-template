@@ -1,0 +1,10 @@
+repos:
+  -   repo: local
+      hooks:
+        - id: bazel-buildifier
+          name: bazel buildifier
+          description: Runs `buildifier`, requires buildifier binary
+          entry: tools/precommit/hooks/run-bazel-buildifier.sh
+          files: '^(.*/)?(BUILD\.bazel|BUILD)$|.*\.bzl$|^WORKSPACE$'
+          language: script
+

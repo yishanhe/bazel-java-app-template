@@ -1,0 +1,10 @@
+package(default_visibility = ["//visibility:public"])
+
+sh_binary(
+    name = "buildifier",
+    srcs = ["buildifier.sh"],
+    data = [
+        "@buildifier//file",
+        "@buildifier_osx//file",
+    ],
+)
