@@ -1,4 +1,4 @@
-package petstore.src.main.java.net.yishanhe.bazel.example.petstore;
+package net.yishanhe.bazel.example.petstore;
 
 import com.example.api.PetsApiDelegate;
 import com.example.model.Pet;

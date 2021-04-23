@@ -4,11 +4,6 @@ package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_openapi//openapi:openapi.bzl", "openapi_gen")
 
-filegroup(
-    name = "api-spec",
-    srcs = [":petstore.yaml"],
-)
-
 openapi_gen(
     name = "petstore-server-src",
     additional_properties = {
@@ -19,7 +14,7 @@ openapi_gen(
     invoker_package = "com.example",
     language = "spring",
     model_package = "com.example.model",
-    spec = ":api-spec",
+    spec = "//api/petstore:api-spec",
     system_properties = {
         "dateLibrary": "java8",
         "delegatePattern": "true",
