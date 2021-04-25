@@ -1,15 +1,16 @@
-package net.yishanhe.bazel.example.petstore;
+package net.yishanhe.bazel.example.petstore.api;
 
-import com.example.api.PetsApiDelegate;
-import com.example.model.Pet;
+import net.yishanhe.bazel.example.api.petstore.PetsApi;
+import net.yishanhe.bazel.example.api.petstore.dto.Pet;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.List;
 import java.util.Optional;
 
-public class PetApiDelegateImpl implements PetsApiDelegate {
-
+@RestController
+public class PetsApiImpl implements PetsApi {
     @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.empty();

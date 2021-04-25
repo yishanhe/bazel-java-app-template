@@ -7,6 +7,39 @@ workspace(
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# https://github.com/bazelbuild/rules_docker/issues/1814
+http_archive(
+    name = "io_bazel_rules_docker",
+    patch_args = ["-p1"],
+    patches = ["//:rules_docker_bad_checksum.patch"],
+    sha256 = "95d39fd84ff4474babaf190450ee034d958202043e366b9fc38f438c9e6c3334",
+    strip_prefix = "rules_docker-0.16.0",
+    urls = ["https://github.com/bazelbuild/rules_docker/releases/download/v0.16.0/rules_docker-v0.16.0.tar.gz"],
+)
+
+load(
+    "@io_bazel_rules_docker//repositories:repositories.bzl",
+    container_repositories = "repositories",
+)
+
+container_repositories()
+
+load("@io_bazel_rules_docker//repositories:deps.bzl", container_deps = "deps")
+
+container_deps()
+
+load(
+    "@io_bazel_rules_docker//container:container.bzl",
+    "container_pull",
+)
+
+container_pull(
+    name = "java_base",
+    registry = "index.docker.io",
+    repository = "openjdk",
+    tag = "8-jre-alpine",
+)
+
 RULES_JVM_EXTERNAL_TAG = "3.0"
 
 RULES_JVM_EXTERNAL_SHA = "62133c125bf4109dfd9d2af64830208356ce4ef8b165a6ef15bbff7460b35c3a"
@@ -36,20 +69,31 @@ maven_install(
         "com.fasterxml.jackson.core:jackson-databind:2.11.0",
         "com.fasterxml.jackson.core:jackson-core:2.11.0",
         "javax.annotation:javax.annotation-api:1.3.2",
+        "javax.persistence:javax.persistence-api:2.2",
         "io.swagger:swagger-annotations:1.5.3",
+        "org.postgresql:postgresql:42.2.20",
+        "org.springframework.data:spring-data-jpa:2.5.0",
+        "org.springframework.data:spring-data-commons:2.5.0",
         "org.springframework:spring-beans:5.2.7.RELEASE",
         "org.springframework:spring-core:5.2.7.RELEASE",
         "org.springframework:spring-context:5.2.7.RELEASE",
         "org.springframework:spring-web:5.2.7.RELEASE",
         "org.springframework:spring-webmvc:5.2.7.RELEASE",
         "org.springframework.boot:spring-boot:2.3.1.RELEASE",
+        "org.springframework.boot:spring-boot-starter:2.3.1.RELEASE",
+        "org.springframework.boot:spring-boot-loader:2.3.1.RELEASE",
+        "org.springframework.boot:spring-boot-starter-logging:2.3.1.RELEASE",
+        "org.springframework.boot:spring-boot-starter-data-jpa:2.3.1.RELEASE",
+        "org.springframework.boot:spring-boot-starter-web:2.3.1.RELEASE",
         "org.springframework.boot:spring-boot-autoconfigure:2.3.1.RELEASE",
-        "org.slf4j:slf4j-api:1.7.30",
+        "org.springframework.boot:spring-boot-actuator:2.3.1.RELEASE",
+        "org.springframework.boot:spring-boot-actuator-autoconfigure:2.3.1.RELEASE",
         "javax.validation:validation-api:2.0.1.Final",
         "javax.servlet:javax.servlet-api:4.0.1",
         "io.springfox:springfox-swagger2:2.9.2",
         "io.springfox:springfox-spring-web:2.9.2",
         "org.openapitools:jackson-databind-nullable:0.2.1",
+        "org.apache.logging.log4j:log4j-slf4j-impl:2.13.3",
     ],
     repositories = [
         "https://jcenter.bintray.com/",
@@ -78,12 +122,12 @@ openapi_repositories(
     prefix = "io_bazel_rules_openapi",
 )
 
-# spring boot rule
+# spring rule
 http_archive(
-    name = "bazel_springboot_rule",
-    sha256 = "98fa7dccf5a68a240f351244b7ed4cd49a0b7bc824ddde3282bc4ad59a038cb1",
+    name = "rules_spring",
+    sha256 = "2178aa714516fe3ba8e88663aef8e183e6ab28c8bf1f9da96f76533ee86a47b4",
     urls = [
-        "https://github.com/salesforce/bazel-springboot-rule/releases/download/1.1.2/bazel-springboot-rule-1.1.2.zip",
+        "https://github.com/salesforce/rules_spring/releases/download/2.1.0/rules-spring-2.1.0.zip",
     ],
 )
 
