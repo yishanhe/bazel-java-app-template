@@ -4,25 +4,19 @@ package(default_visibility = ["//visibility:public"])
 
 load("@io_bazel_rules_openapi//openapi:openapi.bzl", "openapi_gen")
 
-filegroup(
-    name = "api-spec",
-    srcs = [":petstore.yaml"],
-)
-
+# FIXME: figure out which one to use additional_properties or system_properties
 openapi_gen(
     name = "petstore-server-src",
     additional_properties = {
         "dateLibrary": "java8",
-        "delegatePattern": "true",
+        "interfaceOnly": "true",
     },
-    api_package = "com.example.api",
-    invoker_package = "com.example",
+    api_package = "net.yishanhe.bazel.example.api.petstore",
+    invoker_package = "net.yishanhe.bazel.api.petstore",
     language = "spring",
-    model_package = "com.example.model",
-    spec = ":api-spec",
+    model_package = "net.yishanhe.bazel.example.api.petstore.dto",
+    spec = "//api/petstore:api-spec",
     system_properties = {
-        "dateLibrary": "java8",
-        "delegatePattern": "true",
     },
 )
 
